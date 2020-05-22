@@ -1,0 +1,23 @@
+*,
+::after,
+::before {
+  box-sizing: border-box;
+}
+
+img {
+  width: 100%;
+}
+
+.mr5 {
+  margin-right: 5px;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
