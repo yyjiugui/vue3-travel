@@ -1,6 +1,6 @@
 <template>
   <div class="home-icons">
-    <swiper>
+    <swiper :options="swiperOptions">
       <swiper-slide v-for="(page, index) of swiperList" :key="index">
         <div class="icons-container">
           <ul class="icons-ulbox flex">
@@ -16,6 +16,7 @@
 </template>
 
 <script>
+import { computed } from 'vue'
 export default {
   props: {
     iconList: {
@@ -23,10 +24,15 @@ export default {
       default: () => []
     }
   },
-  computed: {
-    swiperList() {
+  setup(props) {
+    const swiperOptions = {
+      autoplay: false,
+      loop: false
+    }
+
+    const swiperList = computed(() => {
       const pages = []
-      this.iconList.forEach((item, index) => {
+      props.iconList.forEach((item, index) => {
         const ids = Math.floor(index / 8)
         if (!pages[ids]) {
           pages[ids] = []
@@ -34,6 +40,11 @@ export default {
         pages[ids].push(item)
       })
       return pages
+    })
+
+    return {
+      swiperList,
+      swiperOptions
     }
   }
 }

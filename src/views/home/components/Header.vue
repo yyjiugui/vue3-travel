@@ -9,7 +9,7 @@
         placeholder="输入城市/景点/游玩主题"
       />
     </div>
-    <div class="home-city">
+    <div class="home-city" @click="$router.push('/city')">
       <span class="mr5">杭州</span>
       <span class="iconfont icon-iconfontjiantou"></span>
     </div>
@@ -27,6 +27,9 @@ export default {}
   display: flex;
   align-items: center;
   background-color: @base;
+  position: fixed;
+  top: 0;
+  z-index: 100;
   .home-icon {
     width: 0.7rem;
     height: 100%;

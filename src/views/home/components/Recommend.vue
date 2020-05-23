@@ -2,7 +2,11 @@
   <div class="home-recommend">
     <div class="home-rec-header">热销推荐</div>
     <div class="rec-container">
-      <div class="rec-list border-bottom flex" v-for="item of recommendList" :key="item.id">
+      <div
+        class="rec-list border-bottom flex"
+        v-for="item of recommendList"
+        :key="item.id"
+      >
         <div class="rec-left">
           <img :src="item.imgUrl" alt />
         </div>
@@ -51,7 +55,7 @@ export default {
     font-size: 14px;
     .line-text-one {
       font-weight: 600;
-      color: #000;
+      color: @base;
     }
     .line-text-two {
       margin: 0.1rem 0;
