@@ -1,12 +1,10 @@
 <template>
   <div class="weekend-list">
-    <div class="home-week-header">
-      周末去哪儿
-    </div>
+    <div class="home-week-header">周末去哪儿</div>
     <div class="home-week-container">
       <div v-for="item of weekendList" :key="item.id">
         <div class="home-week-img">
-          <img :src="item.imgUrl" alt="" />
+          <img :src="item.imgUrl" alt />
         </div>
         <div class="home-content">
           <h3 class="home-week-title">{{ item.title }}</h3>

@@ -1,18 +1,14 @@
 <template>
   <div class="home-recommend">
-    <div class="home-rec-header">
-      热销推荐
-    </div>
+    <div class="home-rec-header">热销推荐</div>
     <div class="rec-container">
-      <div class="rec-list flex" v-for="item of recommendList" :key="item.id">
+      <div class="rec-list border-bottom flex" v-for="item of recommendList" :key="item.id">
         <div class="rec-left">
-          <img :src="item.imgUrl" alt="" />
+          <img :src="item.imgUrl" alt />
         </div>
         <div class="rec-right">
           <p class="line-text-one">{{ item.title }}</p>
-          <p class="line-text-two">
-            {{ item.desc }}
-          </p>
+          <p class="line-text-two">{{ item.desc }}</p>
           <button class="line-text-three">查看详情</button>
         </div>
       </div>
@@ -46,7 +42,6 @@ export default {
   padding: 0.1rem;
   .rec-left {
     width: 1.5rem;
-    background-color: red;
   }
   .rec-right {
     display: flex;
