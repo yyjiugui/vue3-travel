@@ -4,6 +4,11 @@
   box-sizing: border-box;
 }
 
+/* 可以不使用fastclick解决移动端300ms延迟的问题了 */
+html {
+  touch-action: manipulation;
+}
+
 img {
   width: 100%;
 }

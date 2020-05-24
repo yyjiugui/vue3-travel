@@ -3,27 +3,31 @@
     <div class="current-city">
       <p class="current-header border">当前城市</p>
       <div class="current-content">
-        <p class="current-address border">阿坝</p>
+        <p class="current-address border">{{ currentCity ? currentCity : '--' }}</p>
       </div>
     </div>
     <div class="hot-city">
       <p class="hot-header border">热门城市</p>
       <div class="hot-content">
-        <p class="hot-address border" v-for="item of hotCities" :key="item.id">
-          {{ item.name }}
-        </p>
+        <p
+          class="hot-address border"
+          v-for="item of hotCities"
+          :key="item.id"
+          @click="HotCity"
+        >{{ item.name }}</p>
       </div>
     </div>
     <div class="city-list">
       <div v-for="(value, key) in cities" :key="key" :class="key">
-        <div class="city-title border">
-          {{ key }}
-        </div>
+        <div class="city-title border">{{ key }}</div>
         <div class="city-content border-bottom">
           <ul>
-            <li v-for="item of value" :key="item.id" class="content-item">
-              {{ item.name }}
-            </li>
+            <li
+              v-for="item of value"
+              :key="item.id"
+              class="content-item"
+              @click="HotCity"
+            >{{ item.name }}</li>
           </ul>
         </div>
       </div>
@@ -32,7 +36,10 @@
 </template>
 
 <script>
-import { computed } from 'vue'
+import { useStore } from 'vuex'
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import location from '@/utils/location.js'
 export default {
   props: {
     hotCities: {
@@ -44,12 +51,31 @@ export default {
       default: () => []
     }
   },
-  setup(props) {
-    const hotCities = computed(() => props.hotCities)
-    const cities = computed(() => props.cities)
+  setup() {
+    const currentCity = ref('上海')
+    const store = useStore()
+    const router = useRouter()
+    // 获取地理位置 如果store中有用户选择的城市，就用用户的, 否则获取最新的地理位置
+    location(function(getCity) {
+      let localCity = localStorage.getItem('location')
+      if (localCity) {
+        localCity = JSON.parse(localCity).city
+        currentCity.value = localCity
+      } else {
+        currentCity.value = getCity
+      }
+    })
+
+    // 切换城市
+    function HotCity(e) {
+      const city = e.target.innerHTML
+      store.commit('setLocation', { city })
+      router.push('/')
+    }
+
     return {
-      hotCities,
-      cities
+      currentCity,
+      HotCity
     }
   }
 }
@@ -82,6 +108,7 @@ export default {
     font-weight: 600;
     border-radius: 0.05rem;
     text-align: center;
+    border-color: @base;
   }
 }
 

@@ -3,21 +3,38 @@
     <div class="home-icon iconfont icon-jiantou2"></div>
     <div class="home-input">
       <span class="input-icon iconfont icon-sousuo"></span>
-      <input
-        class="input-text"
-        type="text"
-        placeholder="输入城市/景点/游玩主题"
-      />
+      <input class="input-text" type="text" placeholder="输入城市/景点/游玩主题" />
     </div>
     <div class="home-city" @click="$router.push('/city')">
-      <span class="mr5">杭州</span>
-      <span class="iconfont icon-iconfontjiantou"></span>
+      <span class="mr5">{{ city ? city : '选择城市'}}</span>
+      <span class="icon-size iconfont icon-iconfontjiantou"></span>
     </div>
   </div>
 </template>
 
 <script>
-export default {}
+import { ref } from 'vue'
+import location from '@/utils/location.js'
+
+export default {
+  setup() {
+    const city = ref('上海')
+    // 获取地理位置 如果store中有用户选择的城市，就用用户的, 否则获取最新的地理位置
+    location(function(getCity) {
+      let localCity = localStorage.getItem('location')
+      if (localCity) {
+        localCity = JSON.parse(localCity).city
+        city.value = localCity
+      } else {
+        city.value = getCity
+      }
+    })
+
+    return {
+      city
+    }
+  }
+}
 </script>
 
 <style scoped lang="less">
@@ -60,13 +77,19 @@ export default {}
   }
 
   .home-city {
-    width: 1.2rem;
+    min-width: 1.2rem;
+    padding: 0 0.1rem;
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 14px;
     color: #fff;
+    white-space: nowrap;
+  }
+
+  .icon-size {
+    font-size: 12px;
   }
 }
 </style>

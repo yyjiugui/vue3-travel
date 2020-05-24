@@ -1,12 +1,9 @@
 <template>
   <div class="city">
     <Header></Header>
-    <search-city></search-city>
+    <search-city :cities="data.cities"></search-city>
     <div class="scroll-city">
-      <current-city
-        :hotCities="data.hotCities"
-        :cities="data.cities"
-      ></current-city>
+      <current-city :hotCities="data.hotCities" :cities="data.cities"></current-city>
     </div>
     <Alphabet @on-letter-change="letter"></Alphabet>
   </div>
@@ -28,32 +25,53 @@ export default {
     Alphabet
   },
   setup() {
-    const data = reactive({
-      hotCities: [],
-      cities: []
-    })
-    let scroll
-    onMounted(() => {
-      let scrollCity = document.querySelector('.scroll-city')
-      scroll = new BScroll(scrollCity)
-      getCityData()
-    })
-
-    async function getCityData() {
-      const result = await http.get('/api/city.json')
-      const { hotCities, cities } = result.data.data
-      data.hotCities = hotCities
-      data.cities = cities
-    }
-
-    function letter(letter) {
-      const el = document.querySelector(`.${letter}`)
-      scroll.scrollToElement(el)
-    }
+    // 获取城市数据逻辑
+    const { data } = getCityData()
+    const { letter } = scrollTarget()
 
     return {
       data,
       letter
+    }
+
+    function getCityData() {
+      const data = reactive({
+        hotCities: [],
+        cities: []
+      })
+
+      async function getCityData() {
+        const result = await http.get('/api/city.json')
+        const { hotCities, cities } = result.data.data
+        data.hotCities = hotCities
+        data.cities = cities
+      }
+
+      onMounted(() => {
+        getCityData()
+      })
+
+      return {
+        data
+      }
+    }
+
+    function scrollTarget() {
+      let scroll
+      function letter(letter) {
+        const el = document.querySelector(`.${letter}`)
+        scroll.scrollToElement(el, 500)
+      }
+      onMounted(() => {
+        const scrollCity = document.querySelector('.scroll-city')
+        scroll = new BScroll(scrollCity, {
+          click: true
+        })
+      })
+
+      return {
+        letter
+      }
     }
   }
 }
